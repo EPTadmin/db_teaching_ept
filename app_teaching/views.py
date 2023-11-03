@@ -14,7 +14,8 @@ def is_valid_queryparam(param):
 
 def index(request):
     return render(request,'index.html')
-
+def admin(request):
+    return render(request,'admin.html')
 def about(request):
     return render(request,'about.html')
 
