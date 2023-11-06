@@ -47,6 +47,7 @@ class PersonCourseAdmin(admin.ModelAdmin):
     list_display.append("assigned_course")
     list_display.append("assigned_person")
     list_display = ["assigned_person","assigned_course","amount"]
+    list_filter = ("person", "course",)
     @admin.display(description='Course')
     def assigned_course(self, obj):
         return format_html("{}", mark_safe([f"<a href='../course/{course.id}'>{course}</a>" for course in obj.course.all()]))
