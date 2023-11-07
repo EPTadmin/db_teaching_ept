@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-# from app_teaching.views import BootstrapFilterView
+from app_teaching.views import BootstrapFilterView
 
 urlpatterns = [
     path('', views.index, name = 'index'),
@@ -11,5 +11,5 @@ urlpatterns = [
     path('course/<str:pk>', views.CourseDetailView.as_view(), name = 'course_details'),
     path('person/<str:pk>', views.PersonDetailView.as_view(), name = 'person_details'),
 
-    # path('bootstrap/',BootstrapFilterView,name = 'bootstrap_form')
+    path('bootstrap/',BootstrapFilterView,name = 'bootstrap_form')
 ]

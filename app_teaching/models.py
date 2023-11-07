@@ -5,15 +5,21 @@ from django.db import models
 
 
 role_choices = (
-    ('Master Student','Master Student'),
-    ('PhD','PhD'),
-    ('PostDoc','PostDoc'),
-    ('Enginner','Enginner'),
-    ('Associate Professor','Associate Professor'),
-    ('Researcher','Researcher'),
-    ('Professor','Professor'),
+    ('P1','P1'),
+    ('F1','F1'),
+    ('UL','UL'),
+    ('P2','P2'),
+    ('F2','F2'),
+    ('L','L'),
+    ('Ext','Ext')
 )
 
+groupe_choices = (
+    ('s','s'),
+    ('p','p'),
+    ('t','i'),
+    ('Ext','Ext'),
+)
 
 
 
@@ -86,7 +92,7 @@ class Course(models.Model):
 
 class Person(models.Model):
 
-
+    ordering = ('foo', ) 
     first_name = models.CharField(
         unique=False,
         null=False,
@@ -109,8 +115,9 @@ class Person(models.Model):
     )
 
     position = models.CharField (null = False,blank=False,choices = role_choices,
-                            max_length=50)
-    
+                            max_length=3,default='-')
+    groupe = models.CharField (null = False,blank=False,choices = groupe_choices,
+                            max_length=3,default='-')   
     courses = models.ManyToManyField(
         Course,
         related_name='courses'

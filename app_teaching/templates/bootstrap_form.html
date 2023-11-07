@@ -28,9 +28,9 @@
 
     <main role="main" class="container" >
 
-      <h3>Filter Projects</h3>
+      <h3>Filter Course</h3>
       <form method="GET" action="." >
-        <div class="form-row">
+        {% comment %} <div class="form-row">
           <div class="form-group col-12">
               <div class="input-group">
                   <input class="form-control py-2 border-right-0 border" type="search" name="name_or_id_contain" placeholder="Name or ID of the project contains ..." />
@@ -54,24 +54,13 @@
             </div>
         </div>        
     </div> 
-        
+         {% endcomment %}
 
-        <div class="form-row">
 
-          <div class="form-group col-md-2 col-lg-2">
-            <label for="publishDateMin">Starting date minimum</label>
-            <input type="date" class="form-control" id="publishDateMin" name="date_min">
-          </div>
-          <div class="form-group col-md-2 col-lg-2">
-            <label for="publishDateMax">Starting date maximum</label>
-            <input type="date" class="form-control" id="publishDateMax" name="date_max">
-          </div>
-
-        </div>
 
 
         <div class="form-group col-md-4">
-          <label for="person">Author</label>
+          <label for="person">Lecturers</label>
           <select id="person" class="form-control" name="person">
             <option selected>Choose...</option>
             {% for person in persons %}
@@ -81,7 +70,7 @@
         </div> 
 
 
-        <div class="form-group col-md-4">
+        {% comment %} <div class="form-group col-md-4">
           <label for="pro_type">Project Type</label>
           <select id="pro_type" class="form-control" name="pro_type">
             <option selected>Choose...</option>
@@ -99,7 +88,7 @@
             <option value="{{ keyword }}">{{keyword}}</option>
             {% endfor %}
           </select>
-        </div> 
+        </div>  {% endcomment %}
 
 
         {% comment %} <div class="form-group">
@@ -125,23 +114,18 @@
 
       <div class="row">
         <ul>
-          {% for project in  queryset %}
+          {% for course in  queryset %}
             <li>
-             
-              <span><b>Project_id: </b>{{ project.project_id }}</span><p>
-              <span><b>Name: </b>{{ project.name }}</span><p>
-              <span><b>Start date: </b>{{ project.start_date }}</span><p>
-              <span><b>End date: </b>{{ project.end_date }}</span><p>
-              <span><b>Description : </b> {{ project.description }}</span><p>
-              <span><b>Keywords : </b> {{ project.keywords }}</span><p>
-              <span><b>Type : </b> {{ project.type }}</span><p>
+             <span><b>Course_id: </b>{{ course.course_id }}</span><p>
+              <span><b>Name: </b>{{ course.name }}</span><p>
+              <span><b>Type : </b> {{ course.type }}</span><p>
 
               <span>
                 <b>Person working on the project : </b>
-                {% for person in project.persons.all  %}
+                {% for person in course.courses.all  %}
                   {{person.first_name}} {{person.last_name}},
                 {% endfor %}
-              </span><p>
+              </span><p> 
 
             </li>
             <hr />
