@@ -22,7 +22,18 @@ def about(request):
 def courses(request):
     all_courses = models.Course.objects.all()
     return render(request,'courses.html',{'courses': all_courses})
-
+def courses_ses(request):
+    all_courses_ses = models.Course.objects.all()
+    return render(request,'courses_ses.html',{'courses_ses': all_courses_ses})
+def courses_indecol(request):
+    all_courses_indecol = models.Course.objects.all()
+    return render(request,'courses_indecol.html',{'courses_indecol': all_courses_indecol})
+def courses_process(request):
+    all_courses_process = models.Course.objects.all()
+    return render(request,'courses_process.html',{'courses_process': all_courses_process})
+def courses_thermo(request):
+    all_courses_thermo = models.Course.objects.all()
+    return render(request,'courses_thermo.html',{'courses_thermo': all_courses_thermo})
 def persons(request):
     all_persons= models.Person.objects.all()
     return render(request,'persons.html',{'persons': all_persons})

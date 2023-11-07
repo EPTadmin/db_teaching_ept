@@ -26,9 +26,21 @@
                     <a class="nav-link" style="color:green" href="{% url 'admin' %}">Admin</a>
                 </li> 
                 <li class="nav-item">
-                    <a class="nav-link" style="color:green" href="{% url 'courses' %}">Courses</a>
+                    <a class="nav-link" style="color:green" href="{% url 'courses' %}">All Courses</a>
                 </li>
 
+                <li class="nav-item">
+                    <a class="nav-link" style="color:blue" href="{% url 'courses_ses' %}">Courses SES</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" style="color:turquoise" href="{% url 'courses_indecol' %}">Courses IndEcol</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" style="color:red" href="{% url 'courses_process' %}">Courses Process</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" style="color:orange" href="{% url 'courses_thermo' %}">Courses Thermo-Fluis</a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" style="color:green" href="{% url 'persons' %}">Persons</a>
                 </li>

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{%block title %}
+List of Courses Thermo-Fluid
+{%endblock title %}
+
+{%block content%}
+<h1>Courses Thermo-Fluid</h1>
+
+<ul class = "list-group">
+{%for course in courses_thermo%}
+{%if course.group == 't'%}
+
+
+    <a class = "list-group-item list-group-item-action" href = " {% url 'course_details' course.id %}">
+        {{course}}
+    </a>  
+    {%endif%}
+
+{%endfor%}
+</ul>
+{%endblock content%}

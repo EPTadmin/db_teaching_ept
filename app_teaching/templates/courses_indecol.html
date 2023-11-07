@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{%block title %}
+List of Courses Industrial Ecology Programme
+{%endblock title %}
+
+{%block content%}
+<h1>Courses IndEcol</h1>
+
+<ul class = "list-group">
+{%for course in courses_indecol%}
+{%if course.group == 'i'%}
+
+
+    <a class = "list-group-item list-group-item-action" href = " {% url 'course_details' course.id %}">
+        {{course}}
+    </a>  
+    {%endif%}
+
+{%endfor%}
+</ul>
+{%endblock content%}

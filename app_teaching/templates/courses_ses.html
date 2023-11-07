@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{%block title %}
+List of Courses Sustainable Energy Systems
+{%endblock title %}
+
+{%block content%}
+<h1>Courses SES</h1>
+
+<ul class = "list-group">
+{%for course in courses_ses%}
+{%if course.group == 's'%}
+
+
+    <a class = "list-group-item list-group-item-action" href = " {% url 'course_details' course.id %}">
+        {{course}}
+    </a>  
+    {%endif%}
+
+{%endfor%}
+</ul>
+{%endblock content%}

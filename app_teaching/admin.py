@@ -60,7 +60,6 @@ class PersonAdmin(admin.ModelAdmin):
     list_display.append("assigned_Belast_Tid")
     list_display.append("assigned_pourcent_75")
     list_display_links=("first_name","last_name",)
-    print('liste',list_display)
 
     @admin.display(description='Course')
     def assigned_course(self, obj):
@@ -107,14 +106,23 @@ class PersonCourseAdmin(admin.ModelAdmin):
     form = CourseAdminForm
     list_display.append("assigned_course")
     list_display.append("assigned_person")
-    list_display = ["assigned_person","assigned_course","amount"]
-    list_filter = ("person", "course",)
+    list_display.append("assigned_group")
+
+    list_display = ["assigned_person","assigned_group","assigned_course","amount"]
+    list_filter = ("person__groupe","person", "course",)
+    print(list_display)
+
     @admin.display(description='Course')
     def assigned_course(self, obj):
         return format_html("{}", mark_safe([f"<a href='../course/{course.id}'>{course}</a>" for course in obj.course.all()]))
+    
     @admin.display(description='Person')
     def assigned_person(self, obj):
-        return format_html("{}", mark_safe([f"<a href='../person/{person.id}'>{person}</a>" for person in obj.person.all()]))
+        return [person for person in obj.person.all()]
+    
+    @admin.display(description='Group')
+    def assigned_group(self, obj):
+        return [person.groupe for person in obj.person.all()]
 
 admin.site.register(Course, CourseAdmin)
 admin.site.register(Person,PersonAdmin)

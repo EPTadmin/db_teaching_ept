@@ -21,7 +21,12 @@ groupe_choices = (
     ('Ext','Ext'),
 )
 
-
+course_group_choices = (
+    ('s','s'),
+    ('p','p'),
+    ('t','t'),
+    ('i','i'),
+)
 
 course_type_choices = (
     ('O1','O1'),
@@ -64,6 +69,9 @@ class Course(models.Model):
     )
 
     type = models.CharField(choices = course_type_choices,
+                            max_length=3,
+                            default='-')
+    group = models.CharField(choices = course_group_choices,
                             max_length=3,
                             default='-')
     semester = models.CharField(choices = semester_type_choices,
