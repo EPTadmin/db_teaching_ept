@@ -40,7 +40,7 @@ def persons(request):
 
 def personcourse(request):
     all_personcourse= models.PersonCourse.objects.all()
-    return render(request,{'personcourse': all_personcourse})
+    return render(request,'courses_ses.html',{'personcourses': all_personcourse})
 
 
 class CourseDetailView(generic.DetailView):
@@ -53,7 +53,10 @@ class PersonDetailView(generic.DetailView):
     model = models.Person
     context_object_name = 'person'
 
-
+class PersonCourseDetailView(generic.DetailView):
+    template_name = 'person_details.html'
+    model = models.PersonCourse
+    context_object_name = 'personcourse'
 
 
 def BootstrapFilterView(request):

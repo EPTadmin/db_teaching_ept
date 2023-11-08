@@ -5,16 +5,34 @@ List of Courses Thermo-Fluid
 
 {%block content%}
 <h1>Courses Thermo-Fluid</h1>
+Course Type O1 :
+<br>
 
-<ul class = "list-group">
 {%for course in courses_thermo%}
 {%if course.group == 't'%}
 
-
+{%if course.type == 'O1'%}
     <a class = "list-group-item list-group-item-action" href = " {% url 'course_details' course.id %}">
         {{course}}
     </a>  
-    {%endif%}
+{%endif%}
+{%endif%}
+
+{%endfor%}
+<br>
+
+Course Type O2 :
+<br>
+
+{%for course in courses_thermo%}
+{%if course.group == 't'%}
+
+{%if course.type == 'O2'%}
+    <a class = "list-group-item list-group-item-action" href = " {% url 'course_details' course.id %}">
+        {{course}}
+    </a>  
+{%endif%}
+{%endif%}
 
 {%endfor%}
 </ul>

@@ -35,6 +35,7 @@ course_type_choices = (
     ('FP','FP'),
     ('MS','MS'),
     ('PH','PH'),
+    ('-','-'),
 )
 
 semester_type_choices = (
