@@ -10,6 +10,4 @@ class CourseAdminForm(ModelForm):
         fields = '__all__'
 
 
-    
-
 
