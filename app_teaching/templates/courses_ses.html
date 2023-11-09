@@ -55,6 +55,36 @@ Course Type FE :
 {%endfor%}
 <br>
 
+Course Type FP :
+<br>
+
+{%for course in courses_ses%}
+{%if course.group == 's'%}
+
+{%if course.type == 'FP'%}
+    <a class = "list-group-item list-group-item-action" href = " {% url 'course_details' course.id %}">
+        {{course}}
+    </a>  
+{%endif%}
+{%endif%}
+
+{%endfor%}
+<br>
+
+Course Type MS :
+<br>
+
+{%for course in courses_ses%}
+
+{%if course.type == 'MS'%}
+    <a class = "list-group-item list-group-item-action" href = " {% url 'course_details' course.id %}">
+        {{course}}
+    </a>  
+{%endif%}
+
+{%endfor%}
+<br>
+
 Course Type Other :
 <br>
 
