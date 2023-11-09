@@ -7,15 +7,16 @@ from django.db.models import Value
 from django.db.models.functions import Concat
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
-
+import pandas as pd
 # Register your models here.
 
 
 class CourseAdmin(admin.ModelAdmin):
 
-    list_display = [field.name for field in Course._meta.get_fields() if ((field.name != 'id') and (field.name !='courses') and (field.name != 'course_amount')) ]
-    list_filter_link = ("course_id",) 
-    
+    list_display = [field.name for field in Course._meta.get_fields() if ((field.name != 'personcourse') and (field.name != 'id') and (field.name !='courses') and (field.name != 'course_amount')) ]
+    list_filter_links = ('course_id','name') 
+    list_filter = ("type","group", )
+    print(list_display)
 
     # list_display.append("assigned_ressources")
     # a =  [PersonCourse.objects.prefetch_related('course')]
@@ -51,20 +52,34 @@ class CourseAdmin(admin.ModelAdmin):
 
 class PersonAdmin(admin.ModelAdmin):
 
-    list_display = [field.name for field in Person._meta.get_fields() if ((field.name != 'id') and (field.name != 'middle_name')and (field.name != 'person_amount')) ][:-1]
+    list_display = [field.name for field in Person._meta.get_fields() if ((field.name != 'personcourse') and(field.name != 'id') and (field.name != 'middle_name')and (field.name != 'person_amount')) ][:-1]
+    list_filter = ("groupe", )
+    list_display_links = ('first_name', 'last_name')
+
+    print(list_display)
+    # for field in Person._meta.get_fields():
+    #     print(field.name)
     form = CourseAdminForm
-    list_display.append("assigned_course")
-    # list_display.append("assigned_amount")
+    # list_display.append("full_name")
+
+    # list_display.append("assigned_course")
     list_display.append("assigned_amount_O1")
+    # print(list_display)
+
     list_display.append("assigned_amount_O2")
     list_display.append("assigned_Belast_Tid")
+    list_display.append("assigned_Belast_fde")
     list_display.append("assigned_pourcent_75")
-    list_display_links=("first_name","last_name",)
+    # list_display_links=("first_name","last_name",)
 
-    @admin.display(description='Course')
-    def assigned_course(self, obj):
+    # @admin.display(description='Full Name')
+    # def full_name(self, obj):
 
-        return format_html("{}", mark_safe([f"<a href='../course/{course.id}'>{course}</a>" for course in obj.courses.all()]))
+    #     return (format_html("{}", mark_safe([f"<a href='../course/{course.id}'>{course}</a>" for course in obj.courses.all()])))
+    # @admin.display(description='Course')
+    # def assigned_course(self, obj):
+
+    #     return format_html("{}", mark_safe([f"<a href='../course/{course.id}'>{course}</a>" for course in obj.courses.all()]))
 
     # @admin.display(description='Amount')
     # def assigned_amount(self, obj):
@@ -72,16 +87,28 @@ class PersonAdmin(admin.ModelAdmin):
     
     @admin.display(description='Amount_O1')
     def assigned_amount_O1(self, obj):
+        print('personcourse',PersonCourse.objects.filter(course__type ='O1'))
         return round(sum([(a.amount)/100*280 for a in  PersonCourse.objects.filter(person__id = obj.id).filter(course__type ='O1')]))
     @admin.display(description='Amount_O2')
     def assigned_amount_O2(self, obj):
         return round(sum([(a.amount)/100*252 for a in  PersonCourse.objects.filter(person__id = obj.id).filter(course__type ='O2')]))
-    @admin.display(description='Belast_Tid')
+    @admin.display(description='Belast_Tid_7.5')
     def assigned_Belast_Tid(self, obj):
         a=[(a.amount)/100*280 for a in  PersonCourse.objects.filter(person__id = obj.id).filter(course__type ='O1')]
         b=[(a.amount)/100*252 for a in  PersonCourse.objects.filter(person__id = obj.id).filter(course__type ='O2')]
         c=sum(pa for pa in a)+sum(pb for pb in b)
         return round(c)
+        
+    
+    @admin.display(description='Belast_Tid_FDE')
+    def assigned_Belast_fde(self, obj):
+        a=[(a.amount) for a in  PersonCourse.objects.filter(person__id = obj.id).filter(course__type ='FE')]
+        b=[(float(a.course.studiepoeng.replace(',','.'))) for a in PersonCourse.objects.filter(person__id = obj.id).filter(course__type ='FE')]
+        c=sum(((pa))*((pb)) for pa, pb in zip(a,b))
+        #print(c)
+        
+        # c=sum(pa for pa in a)+sum(pb for pb in b)
+        return (c/(100*3.75)*125)
     
     @admin.display(description='% 7.5')
     def assigned_pourcent_75(self, obj):
@@ -89,6 +116,7 @@ class PersonAdmin(admin.ModelAdmin):
         b=[(a.amount)/100*252 for a in  PersonCourse.objects.filter(person__id = obj.id).filter(course__type ='O2')]
         c=sum(pa for pa in a)+sum(pb for pb in b)
         return round(c/250*100)
+    
 
     # @admin.display(description='Amount')
     # def assigned_amount(self, obj):
@@ -101,31 +129,38 @@ class PersonAdmin(admin.ModelAdmin):
 # (course for course in obj.courses.all())
 # ,person__last_name__icontains='Bracchi'
 class PersonCourseAdmin(admin.ModelAdmin):
+#     for a in PersonCourse.objects.all():
+#         print('a',a)
 
-    list_display = [field.name for field in PersonCourse._meta.get_fields() if ((field.name != 'id') and (field.name != 'person') and (field.name != 'course'))]
+    list_display = [field.name for field in PersonCourse._meta.get_fields() if (field.name != 'id')]
+    # list_display.append("assigned_course")
+
+    # list_display = ["assigned_course"]
+    print('list_display',list_display)
+    # for a in list_display:
+    #     print(a)
     form = CourseAdminForm
-    list_display.append("assigned_course")
-    list_display.append("assigned_person")
-    list_display.append("assigned_group")
+    # list_display.append("assigned_person")
+    # list_display.append("assigned_group")
 
-    list_display = ["assigned_person","assigned_group","assigned_course","amount"]
-    list_filter = ("person__groupe","person", "course",)
-    print(list_display)
+#     list_display = ["assigned_person","assigned_group","assigned_course","amount"]
+#     list_filter = ("person__groupe","person", "course",)
+#     print(list_display)
 
-    @admin.display(description='Course')
-    def assigned_course(self, obj):
-        return format_html("{}", mark_safe([f"<a href='../course/{course.id}'>{course}</a>" for course in obj.course.all()]))
+    # @admin.display(description='Course')
+    # def assigned_course(self, obj):
+    #     return format_html("{}", mark_safe([f"<a href='../course/{course.id}'>{course}</a>" for course in obj.course.all()]))
     
-    @admin.display(description='Person')
-    def assigned_person(self, obj):
-        return [person for person in obj.person.all()]
+    # @admin.display(description='Person')
+    # def assigned_person(self, obj):
+    #     return [PersonCourse.__get__(obj.person.person_id)]
     
-    @admin.display(description='Group')
-    def assigned_group(self, obj):
-        return [person.groupe for person in obj.person.all()]
+#     @admin.display(description='Group')
+#     def assigned_group(self, obj):
+#         return [person.groupe for person in obj.person.all()]
 
 admin.site.register(Course, CourseAdmin)
 admin.site.register(Person,PersonAdmin)
+# admin.site.register(PersonCourse,PersonCourseAdmin)
 admin.site.register(PersonCourse,PersonCourseAdmin)
-# admin.site.register(Partner)
 # admin.site.register(Ressource)

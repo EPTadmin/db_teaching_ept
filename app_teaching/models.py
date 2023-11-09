@@ -17,7 +17,8 @@ role_choices = (
 groupe_choices = (
     ('s','s'),
     ('p','p'),
-    ('t','i'),
+    ('t','t'),
+    ('i','i'),
     ('Ext','Ext'),
 )
 
@@ -78,9 +79,9 @@ class Course(models.Model):
     semester = models.CharField(choices = semester_type_choices,
                             max_length=2,
                             default='-')
-    studiepoeng = models.CharField (choices = studiepoeng_choices,
-                            max_length=4,
-                            default='-')
+    studiepoeng = models.CharField(choices = studiepoeng_choices,
+                            max_length=4,default='-'
+                            )
     
     nb_student = models.IntegerField(
         null = True,
@@ -101,7 +102,6 @@ class Course(models.Model):
 
 class Person(models.Model):
 
-    ordering = ('foo', ) 
     first_name = models.CharField(
         unique=False,
         null=False,
@@ -139,9 +139,15 @@ class Person(models.Model):
 
 
 class PersonCourse(models.Model):
-    person = models.ManyToManyField(Person,related_name='person_amount') 
-    course = models.ManyToManyField(Course,related_name='course_amount') 
+    # person = models.ManyToManyField(Person,related_name='person_amount') 
+    person = models.ForeignKey(Person,on_delete=models.CASCADE) 
+    # course = models.ManyToManyField(Course,related_name='course_amount') 
+    course = models.ForeignKey(Course,on_delete=models.CASCADE) 
+
     amount = models.IntegerField()
 
     def __int__(self):
         return self.amount
+
+
+
