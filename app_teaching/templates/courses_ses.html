@@ -85,6 +85,20 @@ Course Type MS :
 {%endfor%}
 <br>
 
+Course Type PH :
+<br>
+
+{%for course in courses_ses%}
+
+{%if course.type == 'PH'%}
+    <a class = "list-group-item list-group-item-action" href = " {% url 'course_details' course.id %}">
+        {{course}}
+    </a>  
+{%endif%}
+
+{%endfor%}
+<br>
+
 Course Type Other :
 <br>
 

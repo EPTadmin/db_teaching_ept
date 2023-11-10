@@ -4,6 +4,7 @@ from app_teaching.views import BootstrapFilterView
 
 urlpatterns = [
     path('', views.index, name = 'index'),
+    path('plot',views.plot,name ='plot'),
     path('about', views.about, name = 'about'),
     path('admin', views.admin, name = 'admin'),
     path('courses/', views.courses, name = 'courses'),

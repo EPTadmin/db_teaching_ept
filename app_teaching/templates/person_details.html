@@ -12,6 +12,8 @@
 
 This person has also contributed to :
 <ul class ="list-group">
+
+    
     {%for course in person.courses.all%}
     {% comment %} <a>{{course}}</a> {% endcomment %}
     <a class = "list-group-item list-group-item-action" href={%url 'course_details' course.id %}>{{course}}</a>
