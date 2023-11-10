@@ -14,6 +14,17 @@ def is_valid_queryparam(param):
 
 def index(request):
     return render(request,'index.html')
+
+
+def plot(request):
+    courses = Course.objects.all()
+    personcourses = PersonCourse.objects.all()
+    context ={
+        "courses": courses,
+        "personcourses":personcourses
+    }
+    return render(request,'app_teaching/index.html',context)
+
 def admin(request):
     return render(request,'admin.html')
 def about(request):

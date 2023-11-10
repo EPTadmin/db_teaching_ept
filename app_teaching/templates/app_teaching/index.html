@@ -1,0 +1,57 @@
+{% extends 'partials/base.html' %}
+
+{%block content%}
+
+<h5>Index Page</h5>
+<div class="row mt-2">
+    <div class="col-md-4">
+    </div>
+    <div class="col-md-8">
+        <div>
+  <canvas id="myChart"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+  const ctx = document.getElementById('myChart');
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: [{% for course in courses%} {% if course.type == 'O1'%} 
+         
+                    '{{course.name}}', 
+              {% endif %}
+
+              {% endfor %}],
+      datasets: [{
+        label: '# of Student',
+        data: [{% for course in courses%}
+         
+        {{course.nb_student}}, 
+
+  {% endfor %}],
+        borderWidth: 1
+        
+      }]
+    },
+
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true,
+          Max: 300,
+        }
+      }
+    }
+  });
+
+</script>
+
+    </div>
+</div>        
+
+{%endblock%}
+
+
