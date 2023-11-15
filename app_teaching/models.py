@@ -1,5 +1,10 @@
 from django.db import models
+from django.conf import settings
 
+from django.utils import timezone
+from django.utils.text import slugify
+from django.urls import reverse
+from taggit.managers import TaggableManager
 # Create your models here.
 
 
@@ -139,15 +144,11 @@ class Person(models.Model):
 
 
 class PersonCourse(models.Model):
-    # person = models.ManyToManyField(Person,related_name='person_amount') 
     person = models.ForeignKey(Person,on_delete=models.CASCADE) 
-    # course = models.ManyToManyField(Course,related_name='course_amount') 
     course = models.ForeignKey(Course,on_delete=models.CASCADE) 
 
     amount = models.IntegerField()
 
     def __int__(self):
         return self.amount
-
-
-
+    

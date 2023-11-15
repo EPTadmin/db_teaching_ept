@@ -8,21 +8,25 @@
 <p>
 </p>
 
-<b>Role : </b>{{person.position}}</p>
 
+
+<b>Role : </b>{{person.position}}</p>
+{{personcourse}}
 This person has also contributed to :
+
 <ul class ="list-group">
 
-    
-    {%for course in person.courses.all%}
-    {% comment %} <a>{{course}}</a> {% endcomment %}
-    <a class = "list-group-item list-group-item-action" href={%url 'course_details' course.id %}>{{course}}</a>
-    {%for course in personcourse.course.course_id %}
-        
-    {{course}}
-    {%endfor%}
 
-    {%endfor%}
+
+            {%for course in person.courses.all%}
+     
+          <a class = "list-group-item list-group-item-action" href={%url 'course_details' course.id %}>{{course}}</a>
+
+          {%endfor%}
+
+
+
+<br>
 
 </ul>
 

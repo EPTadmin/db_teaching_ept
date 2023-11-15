@@ -60,6 +60,26 @@
 
 
         <div class="form-group col-md-4">
+          <label for="course_type">Course Type</label>
+          <select id="course_type" class="form-control" name="course_type">
+            <option selected>Choose...</option>
+            {% for type in categories %}
+            <option value="{{ type }}">{{ type }}</option>
+            {% endfor %}
+          </select>
+        </div> 
+
+        <div class="form-group col-md-4">
+          <label for="course_groupe">Course Group</label>
+          <select id="course_groupe" class="form-control" name="course_groupe">
+            <option selected>Choose...</option>
+            {% for type in groups %}
+            <option value="{{ type }}">{{ type }}</option>
+            {% endfor %}
+          </select>
+        </div> 
+
+        {% comment %} <div class="form-group col-md-4">
           <label for="person">Lecturers</label>
           <select id="person" class="form-control" name="person">
             <option selected>Choose...</option>
@@ -67,9 +87,7 @@
             <option value="{{ person }}">{{ person }}</option>
             {% endfor %}
           </select>
-        </div> 
-
-
+        </div>  {% endcomment %}
         {% comment %} <div class="form-group col-md-4">
           <label for="pro_type">Project Type</label>
           <select id="pro_type" class="form-control" name="pro_type">
@@ -119,12 +137,29 @@
              <span><b>Course_id: </b>{{ course.course_id }}</span><p>
               <span><b>Name: </b>{{ course.name }}</span><p>
               <span><b>Type : </b> {{ course.type }}</span><p>
+              <span><b>Group : </b> {{ course.group }}</span><p>
 
               <span>
-                <b>Person working on the project : </b>
-                {% for person in course.courses.all  %}
-                  {{person.first_name}} {{person.last_name}},
+                <b>Person working on the project : </b><br>
+                {% comment %} <script>
+                  var sum = 0
+                </script> {% endcomment %}
+
+                  {% for person in course.courses.all  %}
+                  {{person.first_name}} {{person.last_name}} ,
+                {% comment %} {% endfor %} {% endcomment %}
+                
+
+                {% for person2 in  personcourse %}
+                {%if person == person2.person %} 
+                {%if course == person2.course %}
+                {{person2.amount}} %<br>
+                {%endif%}
+                {%endif%}
+                {{amount_total}}
                 {% endfor %}
+                {% endfor %}
+
               </span><p> 
 
             </li>
