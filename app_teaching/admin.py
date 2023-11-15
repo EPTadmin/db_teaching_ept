@@ -16,7 +16,6 @@ class CourseAdmin(admin.ModelAdmin):
     list_display = [field.name for field in Course._meta.get_fields() if ((field.name != 'personcourse') and (field.name != 'id') and (field.name !='courses') and (field.name != 'course_amount')) ]
     list_filter_links = ('course_id','name') 
     list_filter = ("type","group", )
-    print(list_display)
 
     # list_display.append("assigned_ressources")
     # a =  [PersonCourse.objects.prefetch_related('course')]
@@ -56,7 +55,6 @@ class PersonAdmin(admin.ModelAdmin):
     list_filter = ("groupe", )
     list_display_links = ('first_name', 'last_name')
 
-    print(list_display)
     # for field in Person._meta.get_fields():
     #     print(field.name)
     form = CourseAdminForm
@@ -166,7 +164,6 @@ class PersonCourseAdmin(admin.ModelAdmin):
     # list_display.append("assigned_course")
 
     # list_display = ["assigned_course"]
-    print('list_display',list_display)
     # for a in list_display:
     #     print(a)
     form = CourseAdminForm
