@@ -1,0 +1,126 @@
+{% extends 'partials/base.html' %}
+
+{%block content%}
+
+<div class="chartBox">
+  <canvas id="myChart"></canvas>
+<div>
+<div class="selectBox"><a >Choose a group</a>
+  <select id="groupselect">
+    <option value = "{%for course in courses%} {{course.nb_student}},{%endfor%} ">All</option>
+    <option value = "{%for course in courses%}{%if course.group == 's'%} {{course.nb_student}},{%endif%}{%endfor%} ">Sustainable Energy Systems</option>
+    <option value = "{%for course in courses%}{%if course.group == 'i'%} {{course.nb_student}},{%endif%}{%endfor%} ">IndEcol</option>
+    <option value = "{%for course in courses%}{%if course.group == 'p'%} {{course.nb_student}},{%endif%}{%endfor%} ">Process and Power</option>
+    <option value = "{%for course in courses%}{%if course.group == 't'%} {{course.nb_student}},{%endif%}{%endfor%} ">Thermo-Fluid</option>
+  </select>
+  <br>
+</div>
+
+<div class="selectBox"><a >Choose a course type</a>
+  <select id="typeselect">
+    <option value = "{%for course in courses%} {{course.nb_student}},{%endfor%} ">All</option>
+
+    <option value = "{%for course in courses%}{%if course.type == 'O1'%} {{course.nb_student}},{%endif%}{%endfor%} ">O1</option>
+    <option value = "{%for course in courses%}{%if course.type == 'O2'%} {{course.nb_student}},{%endif%}{%endfor%} ">O2</option>
+    <option value = "{%for course in courses%}{%if course.type == 'FE'%} {{course.nb_student}},{%endif%}{%endfor%} ">FE</option>
+    <option value = "{%for course in courses%}{%if course.type == 'FP'%} {{course.nb_student}},{%endif%}{%endfor%} ">FP</option>
+    <option value = "{%for course in courses%}{%if course.type == 'MS'%} {{course.nb_student}},{%endif%}{%endfor%} ">MS</option>
+    <option value = "{%for course in courses%}{%if course.type == 'PH'%} {{course.nb_student}},{%endif%}{%endfor%} ">PH</option>
+
+  </select>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+  const ctx = document.getElementById('myChart');
+
+  const myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: [{%for course in courses%}  '{{course.course_id}}',  {%endfor%} ],
+      datasets: [{
+        label: '# of Students',
+        data: [{%for course in courses%}  {{course.nb_student}},{%endfor%}],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+  const groupselect = document.getElementById('groupselect');
+  groupselect.addEventListener('change',groupTrackers);
+  
+  function groupTrackers(){
+    console.log(groupselect.options[groupselect.selectedIndex].text);
+    console.log(groupselect.value);
+    console.log(myChart.data.labels);
+    
+    var group = (groupselect.options[groupselect.selectedIndex].text)
+    if (group == 'Thermo-Fluid'){
+      myChart.data.labels =  [{%for course in courses%} {%if course.group == 't'%} '{{course.course_id}}', {%endif%} {%endfor%} ]
+    }
+    if (group == 'Process and Power'){
+      myChart.data.labels =  [{%for course in courses%} {%if course.group == 'p'%} '{{course.course_id}}', {%endif%} {%endfor%} ]
+    }
+    if (group == 'IndEcol'){
+      myChart.data.labels =  [{%for course in courses%} {%if course.group == 'i'%} '{{course.course_id}}', {%endif%} {%endfor%} ]
+    }
+    if (group == 'Sustainable Energy Systems'){
+      myChart.data.labels =  [{%for course in courses%} {%if course.group == 's'%} '{{course.course_id}}', {%endif%} {%endfor%} ]
+    }
+    if (group == 'All'){
+      myChart.data.labels =  [{%for course in courses%}  '{{course.course_id}}', {%endfor%} ]
+    }
+    //myChart.data.labels = [{%for course in courses%} {%if course.group == 't' %} '{{course.name}}', {%endif%} {%endfor%} ]
+
+    console.log('new labels',myChart.data.labels)
+
+    myChart.data.datasets[0].data = groupselect.value.split(',');
+    myChart.update();
+  }
+
+  const typeselect = document.getElementById('typeselect');
+  typeselect.addEventListener('change',typeTrackers);
+
+  function typeTrackers(){
+    var type = (typeselect.options[typeselect.selectedIndex].text)
+    if (type == 'O1'){
+      myChart.data.labels =  [{%for course in courses%} {%if course.type == 'O1'%} '{{course.course_id}}', {%endif%} {%endfor%} ]
+    }
+    if (type == 'O2'){
+      myChart.data.labels =  [{%for course in courses%} {%if course.type == 'O2'%} '{{course.course_id}}', {%endif%} {%endfor%} ]
+    }
+    if (type == 'FE'){
+      myChart.data.labels =  [{%for course in courses%} {%if course.type == 'FE'%} '{{course.course_id}}', {%endif%} {%endfor%} ]
+    }
+    if (type == 'FP'){
+      myChart.data.labels =  [{%for course in courses%} {%if course.type == 'FP'%} '{{course.course_id}}', {%endif%} {%endfor%} ]
+    }
+    if (type == 'MS'){
+      myChart.data.labels =  [{%for course in courses%}  {%if course.type == 'MS'%} '{{course.course_id}}', {%endif%} {%endfor%} ]
+    }
+    if (type == 'PH'){
+      myChart.data.labels =  [{%for course in courses%}  {%if course.type == 'PH'%} '{{course.course_id}}', {%endif%} {%endfor%} ]
+    }
+    if (type == 'All'){
+      myChart.data.labels =  [{%for course in courses%}  '{{course.course_id}}',  {%endfor%} ]
+    }
+    console.log(typeselect.options[typeselect.selectedIndex].text);
+    myChart.data.datasets[0].data = typeselect.value.split(',');
+    myChart.update();
+  }
+
+
+</script>
+
+</div> {%endblock%}
+
+
+
+
+

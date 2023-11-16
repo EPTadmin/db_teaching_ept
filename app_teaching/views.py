@@ -107,7 +107,7 @@ def BootstrapFilterView(request):
     
     categories = Course.objects.values_list('type', flat=True).distinct()
     print('cat',categories)
-    categories=categories.exclude(type='MS').exclude(type='FP')
+    # categories=categories.exclude(type='MS').exclude(type='FP')
     groups = Course.objects.values_list('group', flat=True).distinct()
     print('groups',groups)  
 
