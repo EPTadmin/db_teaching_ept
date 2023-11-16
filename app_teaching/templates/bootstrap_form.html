@@ -134,10 +134,11 @@
         <ul>
           {% for course in  queryset %}
             <li>
+              {%if course.type  != 'MS'%}{%if course.type != 'FP' %}
              <span><b>Course_id: </b>{{ course.course_id }}</span><p>
               <span><b>Name: </b>{{ course.name }}</span><p>
-              <span><b>Type : </b> {{ course.type }}</span><p>
-              <span><b>Group : </b> {{ course.group }}</span><p>
+              {% comment %} <span><b>Type : </b> {{ course.type }}</span><p> {% endcomment %}
+              {% comment %} <span><b>Group : </b> {{ course.group }}</span><p> {% endcomment %}
 
               <span>
                 <b>Person working on the project : </b><br>
@@ -164,6 +165,71 @@
 
             </li>
             <hr />
+            {%endif%}
+
+            {%endif%}
+            {%if course.type  == 'MS'%}
+            <span><b>Course_id: </b>{{ course.course_id }}</span><p>
+             <span><b>Name: </b>{{ course.name }}</span><p>
+             {% comment %} <span><b>Type : </b> {{ course.type }}</span><p> {% endcomment %}
+             {% comment %} <span><b>Group : </b> {{ course.group }}</span><p> {% endcomment %}
+
+             <span>
+               <b>Person working on the project : </b><br>
+               {% comment %} <script>
+                 var sum = 0
+               </script> {% endcomment %}
+
+                 {% for person in course.courses.all  %}
+                 {{person.first_name}} {{person.last_name}} ,
+               {% comment %} {% endfor %} {% endcomment %}
+               
+
+               {% for person2 in  personcourse %}
+               {%if person == person2.person %} 
+               {%if course == person2.course %}
+               {{person2.amount}} students(s)<br>
+               {%endif%}
+               {%endif%}
+               {% endfor %}
+               {% endfor %}
+
+             </span><p> 
+
+           </li>
+           <hr />
+           {%endif%}
+           {%if course.type  == 'FP'%}
+           <span><b>Course_id: </b>{{ course.course_id }}</span><p>
+            <span><b>Name: </b>{{ course.name }}</span><p>
+            {% comment %} <span><b>Type : </b> {{ course.type }}</span><p> {% endcomment %}
+            {% comment %} <span><b>Group : </b> {{ course.group }}</span><p> {% endcomment %}
+
+            <span>
+              <b>Person working on the project : </b><br>
+              {% comment %} <script>
+                var sum = 0
+              </script> {% endcomment %}
+
+                {% for person in course.courses.all  %}
+                {{person.first_name}} {{person.last_name}} ,
+              {% comment %} {% endfor %} {% endcomment %}
+              
+
+              {% for person2 in  personcourse %}
+              {%if person == person2.person %} 
+              {%if course == person2.course %}
+              {{person2.amount}} students(s)<br>
+              {%endif%}
+              {%endif%}
+              {% endfor %}
+              {% endfor %}
+
+            </span><p> 
+
+          </li>
+          <hr />
+          {%endif%}
           {% endfor %}
         </ul>
       </div> 

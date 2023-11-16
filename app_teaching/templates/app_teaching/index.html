@@ -3,120 +3,120 @@
 {%block content%}
 
 <div class="chartBox">
-  <canvas id="myChart"></canvas>
+  <canvas id="myChart"width="700"></canvas>
 <div>
-<div class="selectBox"><a >Choose a group</a>
-  <select id="groupselect">
-    <option value = "{%for course in courses%} {{course.nb_student}},{%endfor%} ">All</option>
-    <option value = "{%for course in courses%}{%if course.group == 's'%} {{course.nb_student}},{%endif%}{%endfor%} ">Sustainable Energy Systems</option>
-    <option value = "{%for course in courses%}{%if course.group == 'i'%} {{course.nb_student}},{%endif%}{%endfor%} ">IndEcol</option>
-    <option value = "{%for course in courses%}{%if course.group == 'p'%} {{course.nb_student}},{%endif%}{%endfor%} ">Process and Power</option>
-    <option value = "{%for course in courses%}{%if course.group == 't'%} {{course.nb_student}},{%endif%}{%endfor%} ">Thermo-Fluid</option>
-  </select>
-  <br>
-</div>
 
-<div class="selectBox"><a >Choose a course type</a>
-  <select id="typeselect">
-    <option value = "{%for course in courses%} {{course.nb_student}},{%endfor%} ">All</option>
 
-    <option value = "{%for course in courses%}{%if course.type == 'O1'%} {{course.nb_student}},{%endif%}{%endfor%} ">O1</option>
-    <option value = "{%for course in courses%}{%if course.type == 'O2'%} {{course.nb_student}},{%endif%}{%endfor%} ">O2</option>
-    <option value = "{%for course in courses%}{%if course.type == 'FE'%} {{course.nb_student}},{%endif%}{%endfor%} ">FE</option>
-    <option value = "{%for course in courses%}{%if course.type == 'FP'%} {{course.nb_student}},{%endif%}{%endfor%} ">FP</option>
-    <option value = "{%for course in courses%}{%if course.type == 'MS'%} {{course.nb_student}},{%endif%}{%endfor%} ">MS</option>
-    <option value = "{%for course in courses%}{%if course.type == 'PH'%} {{course.nb_student}},{%endif%}{%endfor%} ">PH</option>
-
-  </select>
-</div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<script>
-  const ctx = document.getElementById('myChart');
 
-  const myChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: [{%for course in courses%}  '{{course.course_id}}',  {%endfor%} ],
-      datasets: [{
-        label: '# of Students',
-        data: [{%for course in courses%}  {{course.nb_student}},{%endfor%}],
-        borderWidth: 1
-      }]
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true
-        }
+
+    <script>
+       
+      var lineChartData = {
+          labels: [{%for a in personcourses%}{%if a.course.type == 'O1' %}{%if a.course.semester == 'H' %}{%ifchanged%}
+          '{{a.course}}',{%endifchanged%}{%endif%}{%endif%}{%endfor%}
+          ],
+          datasets: []
+      },
+          array = [{%for a in personcourses%}
+                  { Teaching: '{{a.course}}', Lecturer :  '{{a.person}}', Pourcent: {{a.amount}} },
+                  {%endfor%}
+                  ];
+          Teaching =[{%for a in personcourses%}{%if a.course.type == 'O1' %}{%if a.course.semester == 'H' %}{%ifchanged%}
+                 '{{a.course}}',{%endifchanged%}{%endif%}{%endif%}{%endfor%}
+                 ];
+
+
+          Lecturer =[{%for a in personcourses%}
+          {%ifchanged%}'{{a.person}}',{%endifchanged%}{%endfor%}
+          ];
+
+          let unique_lecturer = Lecturer.filter(function(value, index, array) {
+            return array.indexOf(value) === index;
+          });
+
+
+          let text = "["
+          let text2 = "]"
+
+          var array_new=[]
+          var array_new_total =[]
+          var p=0
+          for (k = 0; k <unique_lecturer.length; k++){
+            for(i=0;i<Teaching.length;i++){
+              for ( j = 0; j < array.length; j++) { 
+                if (((unique_lecturer[k] != array[j].Lecturer) && (Teaching[i] != array[j].Teaching)) || ((unique_lecturer[k] == array[j].Lecturer) && (Teaching[i] != array[j].Teaching)) || ((unique_lecturer[k] != array[j].Lecturer) && (Teaching[i] == array[j].Teaching))) {
+                  p=0
+                  } 
+                if ((unique_lecturer[k] == array[j].Lecturer) && (Teaching[i] == array[j].Teaching)){
+                  p=array[j].Pourcent    
+
+                  j=array.length
+                }
+               }
+               array_new.push(p)
+
+              }
+
+              array_new_total.push(text.concat([array_new]).concat(text2))
+              array_new=[]
+             //}
+
+            }
+
+
+ 
+
+          array_new_total.forEach(function (a, i) {
+          if (JSON.parse(a).every(item => item === 0)){console.log(a,i)
+            //data.splice(i, 1);labels.splice(i, 1);i--;
+          }
+          else{
+          lineChartData.datasets.push({
+              label:  unique_lecturer[i],
+              fillColor: 'rgba(220,220,220,0.2)',
+              strokeColor: 'rgba(220,220,220,1)',
+              pointColor: 'rgba(220,220,220,1)',
+              pointStrokeColor: '#fff',
+              pointHighlightFill: '#fff',
+              pointHighlightStroke:
+                  'rgba(220,220,220,1)',
+              data: JSON.parse(a)
+              
+          })};
+          //console.log(lineChartData.datasets[i].data,lineChartData.datasets[i].label)
+
       }
-    }
-  });
-  const groupselect = document.getElementById('groupselect');
-  groupselect.addEventListener('change',groupTrackers);
-  
-  function groupTrackers(){
-    console.log(groupselect.options[groupselect.selectedIndex].text);
-    console.log(groupselect.value);
-    console.log(myChart.data.labels);
     
-    var group = (groupselect.options[groupselect.selectedIndex].text)
-    if (group == 'Thermo-Fluid'){
-      myChart.data.labels =  [{%for course in courses%} {%if course.group == 't'%} '{{course.course_id}}', {%endif%} {%endfor%} ]
-    }
-    if (group == 'Process and Power'){
-      myChart.data.labels =  [{%for course in courses%} {%if course.group == 'p'%} '{{course.course_id}}', {%endif%} {%endfor%} ]
-    }
-    if (group == 'IndEcol'){
-      myChart.data.labels =  [{%for course in courses%} {%if course.group == 'i'%} '{{course.course_id}}', {%endif%} {%endfor%} ]
-    }
-    if (group == 'Sustainable Energy Systems'){
-      myChart.data.labels =  [{%for course in courses%} {%if course.group == 's'%} '{{course.course_id}}', {%endif%} {%endfor%} ]
-    }
-    if (group == 'All'){
-      myChart.data.labels =  [{%for course in courses%}  '{{course.course_id}}', {%endfor%} ]
-    }
-    //myChart.data.labels = [{%for course in courses%} {%if course.group == 't' %} '{{course.name}}', {%endif%} {%endfor%} ]
+    
+      );
 
-    console.log('new labels',myChart.data.labels)
+      const ctx = document.getElementById('myChart');
 
-    myChart.data.datasets[0].data = groupselect.value.split(',');
-    myChart.update();
-  }
-
-  const typeselect = document.getElementById('typeselect');
-  typeselect.addEventListener('change',typeTrackers);
-
-  function typeTrackers(){
-    var type = (typeselect.options[typeselect.selectedIndex].text)
-    if (type == 'O1'){
-      myChart.data.labels =  [{%for course in courses%} {%if course.type == 'O1'%} '{{course.course_id}}', {%endif%} {%endfor%} ]
-    }
-    if (type == 'O2'){
-      myChart.data.labels =  [{%for course in courses%} {%if course.type == 'O2'%} '{{course.course_id}}', {%endif%} {%endfor%} ]
-    }
-    if (type == 'FE'){
-      myChart.data.labels =  [{%for course in courses%} {%if course.type == 'FE'%} '{{course.course_id}}', {%endif%} {%endfor%} ]
-    }
-    if (type == 'FP'){
-      myChart.data.labels =  [{%for course in courses%} {%if course.type == 'FP'%} '{{course.course_id}}', {%endif%} {%endfor%} ]
-    }
-    if (type == 'MS'){
-      myChart.data.labels =  [{%for course in courses%}  {%if course.type == 'MS'%} '{{course.course_id}}', {%endif%} {%endfor%} ]
-    }
-    if (type == 'PH'){
-      myChart.data.labels =  [{%for course in courses%}  {%if course.type == 'PH'%} '{{course.course_id}}', {%endif%} {%endfor%} ]
-    }
-    if (type == 'All'){
-      myChart.data.labels =  [{%for course in courses%}  '{{course.course_id}}',  {%endfor%} ]
-    }
-    console.log(typeselect.options[typeselect.selectedIndex].text);
-    myChart.data.datasets[0].data = typeselect.value.split(',');
-    myChart.update();
-  }
-
-
-</script>
+      new Chart(ctx, {
+          type: 'bar',
+          data: {
+              labels: lineChartData.labels ,
+              datasets: lineChartData.datasets
+          },
+          
+          options: {
+              skipNull:true,
+              scales: {
+                x:{
+                  stacked: true,
+                },
+                  y: {
+                    stacked: true,
+                      
+                  }
+              }
+          }
+      }
+      );
+  </script>
+ </script>
 
 </div> {%endblock%}
 
