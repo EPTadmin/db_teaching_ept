@@ -1,0 +1,124 @@
+{% extends 'partials/base.html' %}
+
+{%block content%}
+
+<div class="chartBox">
+  <canvas id="myChart"width="700"></canvas>
+<div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+
+    <script>
+       
+      var lineChartData = {
+          labels: [{%for a in personcourses%}{%if a.course.type != 'MS' %}{%if a.course.type != 'FP' %}{%if a.course.semester == 'H' %}{%ifchanged%}
+          '{{a.course}}',{%endifchanged%}{%endif%}{%endif%}{%endif%}{%endfor%}
+          ],
+          datasets: []
+      },
+          array = [{%for a in personcourses%}
+                  { Teaching: '{{a.course}}', Lecturer :  '{{a.person}}', Pourcent: {{a.amount}} },
+                  {%endfor%}
+                  ];
+          Teaching =[{%for a in personcourses%}{%if a.course.type != 'MS' %}{%if a.course.type != 'FP' %}{%if a.course.semester == 'H' %}{%ifchanged%}
+                 '{{a.course}}',{%endifchanged%}{%endif%}{%endif%}{%endif%}{%endfor%}
+                 ];
+
+
+          Lecturer =[{%for a in personcourses%}
+          {%ifchanged%}'{{a.person}}',{%endifchanged%}{%endfor%}
+          ];
+
+          let unique_lecturer = Lecturer.filter(function(value, index, array) {
+            return array.indexOf(value) === index;
+          });
+
+
+          let text = "["
+          let text2 = "]"
+
+          var array_new=[]
+          var array_new_total =[]
+          var p=0
+          for (k = 0; k <unique_lecturer.length; k++){
+            for(i=0;i<Teaching.length;i++){
+              for ( j = 0; j < array.length; j++) { 
+                if (((unique_lecturer[k] != array[j].Lecturer) && (Teaching[i] != array[j].Teaching)) || ((unique_lecturer[k] == array[j].Lecturer) && (Teaching[i] != array[j].Teaching)) || ((unique_lecturer[k] != array[j].Lecturer) && (Teaching[i] == array[j].Teaching))) {
+                  p=0
+                  } 
+                if ((unique_lecturer[k] == array[j].Lecturer) && (Teaching[i] == array[j].Teaching)){
+                  p=array[j].Pourcent    
+
+                  j=array.length
+                }
+               }
+               array_new.push(p)
+
+              }
+
+              array_new_total.push(text.concat([array_new]).concat(text2))
+              array_new=[]
+             //}
+
+            }
+
+
+ 
+
+          array_new_total.forEach(function (a, i) {
+          if (JSON.parse(a).every(item => item === 0)){console.log(a,i)
+            //data.splice(i, 1);labels.splice(i, 1);i--;
+          }
+          else{
+          lineChartData.datasets.push({
+              label:  unique_lecturer[i],
+              fillColor: 'rgba(220,220,220,0.2)',
+              strokeColor: 'rgba(220,220,220,1)',
+              pointColor: 'rgba(220,220,220,1)',
+              pointStrokeColor: '#fff',
+              pointHighlightFill: '#fff',
+              pointHighlightStroke:
+                  'rgba(220,220,220,1)',
+              data: JSON.parse(a)
+              
+          })};
+          //console.log(lineChartData.datasets[i].data,lineChartData.datasets[i].label)
+
+      }
+    
+    
+      );
+
+      const ctx = document.getElementById('myChart');
+
+      new Chart(ctx, {
+          type: 'bar',
+          data: {
+              labels: lineChartData.labels ,
+              datasets: lineChartData.datasets
+          },
+          
+          options: {
+            indexAxis: 'y',
+
+              skipNull:true,
+              scales: {
+                x:{
+                  stacked: true,
+                },
+                  y: {
+
+                    stacked: true,
+                      
+                  }
+              }
+          }
+      }
+      );
+  </script>
+ </script>
+
+</div> {%endblock%}

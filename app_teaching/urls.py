@@ -10,6 +10,9 @@ urlpatterns = [
     path('courses/', views.courses, name = 'courses'),
     path('courseperson', views.courseperson, name = 'courseperson'),
     path('courseperson_s/', views.courseperson_s, name = 'courseperson_s'),
+    path('courseperson_i/', views.courseperson_i, name = 'courseperson_i'),
+    path('courseperson_p/', views.courseperson_p, name = 'courseperson_p'),
+    path('courseperson_t/', views.courseperson_t, name = 'courseperson_t'),
 
     path('courses_ses/', views.courses_ses, name = 'courses_ses'),
     path('courses_indecol/', views.courses_indecol, name = 'courses_indecol'),
