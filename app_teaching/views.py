@@ -21,9 +21,17 @@ def index(request):
     return render(request,'index.html')
 
 
+# def plot(request):
+#     courses = Course.objects.all()
+#     personcourses = PersonCourse.objects.all()
+#     context ={
+#         "courses": courses,
+#         "personcourses":personcourses
+#     }
 def plot(request):
-    courses = Course.objects.all()
-    personcourses = PersonCourse.objects.all()
+    courses = [{'course_id':obj.course_id, 'name':obj.name,'type':obj.type,'group':obj.group,'nb_student':obj.nb_student }for obj in Course.objects.all()]
+    personcourses = [{'person':obj.person.first_name+ ' ' +obj.person.last_name, 'course_type':obj.course.type, 'course_group':obj.course.group,'course':obj.course.course_id+ ' ' +obj.course.name,'amount':obj.amount}for obj in PersonCourse.objects.all()]
+    print(personcourses)
     context ={
         "courses": courses,
         "personcourses":personcourses
@@ -56,6 +64,10 @@ def persons(request):
     all_persons= models.Person.objects.all()
     return render(request,'persons.html',{'persons': all_persons})
 
+def position_activity(request):
+    all_position_activitys= models.Position_Activity.objects.all()
+    return render(request,{'position_activitys': all_position_activitys})
+
 # def personcourse(request):
 #     all_personcourse= models.PersonCourse.objects.all()
 #     return render(request,'person_details.html', {'personcourse': all_personcourse})
@@ -77,6 +89,19 @@ def courseperson(request):
 def courseperson_s(request):
     all_courses_ses =PersonCourse.objects.all()
     return render(request,'courseperson_s.html',{'coursepersons': all_courses_ses})
+
+def courseperson_i(request):
+    all_courses_indecol =PersonCourse.objects.all()
+    return render(request,'courseperson_i.html',{'coursepersons': all_courses_indecol})
+
+def courseperson_p(request):
+    all_courses_process =PersonCourse.objects.all()
+    return render(request,'courseperson_p.html',{'coursepersons': all_courses_process})
+
+def courseperson_t(request):
+    all_courses_thermo=PersonCourse.objects.all()
+    return render(request,'courseperson_t.html',{'coursepersons': all_courses_thermo})
+
 
 class CourseDetailView(generic.DetailView):
     template_name = 'course_details.html'

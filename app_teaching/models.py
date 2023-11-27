@@ -56,9 +56,38 @@ studiepoeng_choices = (
     ('15,0','15'),
     ('20,0','20'),
     ('30,0','30'),
-
 )
 
+roletype_choices = (
+    ('Instituttleder','Instituttleder'),
+    ('Nestleder forskning','Nestleder forskning'),
+    ('Nestleder utdanning','Nestleder utdanning'),
+    ('Faggruppeleder','Faggruppeleder'),
+    ('Studieprogramleder','Studieprogramleder'),
+    ('Leder - forskningsprosjekt','Leder - forskningsprosjekt'),
+    ('WP leder - Forskningsprosjekt','WP leder - Forskningsprosjekt'),
+    ('Leder - EU prosjekt','Leder - EU prosjekt'),
+    ('WP leder - EU prosjekt','WP leder - EU prosjekt'),
+    ('Antall PhD studenter','Antall PhD studenter'),
+)
+
+emne_choices = (
+    ('L','L'),
+    ('P','P'),
+
+    
+)
+antall_time_choices = (
+    ('50','50'),
+    ('70','70'),
+    ('100','100'),
+
+)
+arsverk_choices= (
+    ('20','20'),
+    ('80','80'),
+
+)
 class Course(models.Model):
 
     course_id = models.CharField(
@@ -151,4 +180,28 @@ class PersonCourse(models.Model):
 
     def __int__(self):
         return self.amount
+    
+
+# class Position_Activity(models.Model):
+#     type = models.CharField(choices = roletype_choices,
+#                             max_length=40,
+#                             default='-')
+#     emne = models.CharField(choices = emne_choices,
+#                             max_length=2,
+#                             default='-')
+#     antall_time = models.CharField(choices = antall_time_choices,blank=True,null=True,max_length=3
+#                             )
+#     arsverk = models.CharField(choices = arsverk_choices,blank=True,null=True,max_length=3
+#                             )
+    
+#     def __str__(self):
+#         return self.type
+
+# class PersonPosition_Activity(models.Model):
+#     person = models.ForeignKey(Person,on_delete=models.CASCADE) 
+#     activity = models.ForeignKey(Position_Activity,on_delete=models.CASCADE) 
+#     amount = models.IntegerField()
+
+#     def __int__(self):
+#         return self.amount
     

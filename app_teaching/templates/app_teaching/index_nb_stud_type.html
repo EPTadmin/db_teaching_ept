@@ -3,18 +3,18 @@
 {%block content%}
 
 <div class="chartBox">
-  <canvas id="myChart"></canvas>
+  <canvas id="myChart" height="100"></canvas>
 <div>
-<div class="selectBox"><a >Choose a group</a>
-  <select id="groupselect">
-    <option value = "{%for course in courses%} {{course.nb_student}},{%endfor%} ">All</option>
-    <option value = "{%for course in courses%}{%if course.group == 's'%} {{course.nb_student}},{%endif%}{%endfor%} ">Sustainable Energy Systems</option>
-    <option value = "{%for course in courses%}{%if course.group == 'i'%} {{course.nb_student}},{%endif%}{%endfor%} ">IndEcol</option>
-    <option value = "{%for course in courses%}{%if course.group == 'p'%} {{course.nb_student}},{%endif%}{%endfor%} ">Process and Power</option>
-    <option value = "{%for course in courses%}{%if course.group == 't'%} {{course.nb_student}},{%endif%}{%endfor%} ">Thermo-Fluid</option>
-  </select>
-  <br>
-</div>
+  <div class="selectBox"><a >Choose a group</a>
+    <select id="groupselect">
+      <option value = "{%for course in courses%} {{course.nb_student}},{%endfor%} ">All</option>
+      <option value = "{%for course in courses%}{%if course.group == 's'%} {{course.nb_student}},{%endif%}{%endfor%} ">Sustainable Energy Systems</option>
+      <option value = "{%for course in courses%}{%if course.group == 'i'%} {{course.nb_student}},{%endif%}{%endfor%} ">IndEcol</option>
+      <option value = "{%for course in courses%}{%if course.group == 'p'%} {{course.nb_student}},{%endif%}{%endfor%} ">Process and Power</option>
+      <option value = "{%for course in courses%}{%if course.group == 't'%} {{course.nb_student}},{%endif%}{%endfor%} ">Thermo-Fluid</option>
+    </select>
+    <br>
+  </div>
 
 <div class="selectBox"><a >Choose a course type</a>
   <select id="typeselect">
@@ -32,20 +32,38 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-  const ctx = document.getElementById('myChart');
+
+
+  function getRandomColor() {
+    var letters = '0123456789ABCDEF'.split('');
+    var color = '#';
+    for (var i = 0; i < 6; i++ ) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+
+
   var courses = {{courses|safe}};
+
+  const ctx = document.getElementById('myChart');
 
   const myChart = new Chart(ctx, {
     type: 'bar',
     data: {
-      labels: courses.map((course)=>course['course_id']) ,
+      labels: [{%for course in courses%}  '{{course.course_id}}',  {%endfor%} ],
+
       datasets: [{
-        label: '# of Students',
+        label: 'Number of Students per course type and per group',
         data: [{%for course in courses%}  {{course.nb_student}},{%endfor%}],
+        //backgroundColor: [getRandomColor()], 
+
         borderWidth: 1
       }]
     },
     options: {
+      indexAxis: 'y',
+
       scales: {
         y: {
           beginAtZero: true
@@ -78,7 +96,8 @@
       myChart.data.labels =  courses.filter((course) => (course.type == type)).map((course)=>course['course_id'])
     }
 
-    console.log(typeselect.options[typeselect.selectedIndex].text);
+    console.log('type',typeselect.options[typeselect.selectedIndex].text);
+    console.log('value',typeselect.value.split(','))
     myChart.data.datasets[0].data = typeselect.value.split(',');
     myChart.update();
   }
@@ -87,8 +106,3 @@
 </script>
 
 </div> {%endblock%}
-
-
-
-
-
