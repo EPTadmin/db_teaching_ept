@@ -5,8 +5,13 @@ from app_teaching.views import BootstrapFilterView
 urlpatterns = [
     path('', views.index, name = 'index'),
     path('plot/',views.plot,name ='plot'),
+    path('plot/index_nb_stud_type/index_load', views.load,name ='index_load'),
+    path('plot/index_nb_stud_type/', views.nb_student,name ='index_nb_stud_type'),
+    path('plot/index_load/', views.load,name ='index_load'),
+    path('plot/index_load/index_nb_stud_type', views.nb_student,name ='nb_student'),
+
     path('about', views.about, name = 'about'),
-    path('admin', views.admin, name = 'admin'),
+    path('admin/', views.admin, name = 'admin'),
     path('courses/', views.courses, name = 'courses'),
     path('courseperson', views.courseperson, name = 'courseperson'),
     path('courseperson_s/', views.courseperson_s, name = 'courseperson_s'),

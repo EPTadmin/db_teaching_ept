@@ -63,14 +63,18 @@
     },
     options: {
       indexAxis: 'y',
-
       scales: {
-        y: {
-          beginAtZero: true
-        }
+        x:{
+          stacked: true,
+        },
+          y: {
+            stacked: true,
+              
+          }
       }
     }
   });
+  console.log('pprin',myChart.data.labels,myChart.data.datasets)
   const groupselect = document.getElementById('groupselect');
   groupselect.addEventListener('change',trackers);
   
