@@ -30,7 +30,7 @@ def index(request):
 #     }
 def plot(request):
     courses = [{'course_id':obj.course_id, 'name':obj.name,'type':obj.type,'group':obj.group,'nb_student':obj.nb_student }for obj in Course.objects.all()]
-    personcourses = [{'person':obj.person.first_name+ ' ' +obj.person.last_name, 'course_type':obj.course.type, 'course_group':obj.course.group,'course':obj.course.course_id+ ' ' +obj.course.name,'amount':obj.amount}for obj in PersonCourse.objects.all()]
+    personcourses = [{'person_group':obj.person.groupe,'person':obj.person.first_name+ ' ' +obj.person.last_name, 'course_type':obj.course.type, 'course_group':obj.course.group,'course':obj.course.course_id+ ' ' +obj.course.name,'amount':obj.amount}for obj in PersonCourse.objects.all()]
     print(personcourses)
     context ={
         "courses": courses,
@@ -38,7 +38,24 @@ def plot(request):
     }
     return render(request,'app_teaching/index.html',context)
 
+def nb_student(request):
+    courses = [{'course_id':obj.course_id, 'name':obj.name,'type':obj.type,'group':obj.group,'nb_student':obj.nb_student }for obj in Course.objects.all()]
+    context ={
+        "courses": courses
+    }
+    return render(request,'app_teaching/index_nb_stud_type.html',context)
 
+def load(request):
+    courses = [{'course_id':obj.course_id, 'name':obj.name,'type':obj.type,'group':obj.group,'nb_student':obj.nb_student }for obj in Course.objects.all()]
+    persons = [{'name':obj.first_name+ ' ' +obj.last_name,'group':obj.groupe}for obj in Person.objects.all()]
+    personcourses = [{'person_group':obj.person.groupe,'person':obj.person.first_name+ ' ' +obj.person.last_name, 'course_type':obj.course.type, 'course_sp':obj.course.studiepoeng,'course_group':obj.course.group,'course':obj.course.course_id+ ' ' +obj.course.name,'amount':obj.amount}for obj in PersonCourse.objects.all()]
+    print(personcourses)
+    context ={
+        "persons":persons,
+        "courses": courses,
+        "personcourses":personcourses
+    }
+    return render(request,'app_teaching/index_load.html',context)
 
 def admin(request):
     return render(request,'admin.html')
