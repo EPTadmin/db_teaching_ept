@@ -24,7 +24,8 @@ class CourseAdmin(admin.ModelAdmin):
 
 class PersonAdmin(admin.ModelAdmin):
 
-    list_display = [field.name for field in Person._meta.get_fields() if ((field.name != 'personcourse') and(field.name != 'id') and (field.name != 'middle_name')and (field.name != 'person_amount')) ][:-1]
+    list_display = [field.name for field in Person._meta.get_fields() if ((field.name != 'personcourse')and (field.name != 'personactivity') and(field.name != 'id') and (field.name != 'middle_name')and (field.name != 'person_amount')) ][:-2]
+    print(list_display)
     list_filter = ("groupe", )
     list_display_links = ('first_name', 'last_name')
 
@@ -41,6 +42,9 @@ class PersonAdmin(admin.ModelAdmin):
     list_display.append("assigned_student_msc")
     list_display.append("assigned_Belast_msc")
     list_display.append("assigned_Belast_phd")
+    list_display.append("Timer_posisjoner")
+    list_display.append("Timer_prosjekt")
+
     # list_display.append("position_activity")
 
 
@@ -110,9 +114,26 @@ class PersonAdmin(admin.ModelAdmin):
         a=[1 for a in  PersonCourse.objects.filter(person__id = obj.id).filter(course__type ='PH') if a!=0]                
         return int(sum(pa*250 for pa in a))
     
-    # @admin.display(description='Position_Activity')
-    # def position_activity(self, obj):
-    #     return [a.activity__type for  a in PersonPosition_Activity.objects.filter(person__id = obj.id)]
+    @admin.display(description='Timer_posisjoner')
+    def Timer_posisjoner(self, obj):
+
+        a=[((a.amount)*1750*0.8) for a in  PersonActivity.objects.filter(person__id = obj.id).filter(activity__arsverk ='80')]
+        b=[((b.amount)*1750*0.3) for b in  PersonActivity.objects.filter(person__id = obj.id).filter(activity__arsverk ='30')]
+        c=[((c.amount)*1750*0.2) for c in  PersonActivity.objects.filter(person__id = obj.id).filter(activity__arsverk ='20')]
+
+        d=sum(pa for pa in a) + sum(pb for pb in b) +sum(pc for pc in c)
+        return (d)
+    
+    @admin.display(description='Timer_prosjekt')
+    def Timer_prosjekt(self, obj):
+       
+
+        a=[((a.amount)*50) for a in  PersonActivity.objects.filter(person__id = obj.id).filter(activity__antall_time ='50')]
+        b=[((b.amount)*70) for b in  PersonActivity.objects.filter(person__id = obj.id).filter(activity__antall_time ='70')]
+        c=[((c.amount)*100) for c in  PersonActivity.objects.filter(person__id = obj.id).filter(activity__antall_time ='100')]
+
+        d=sum(pa for pa in a) + sum(pb for pb in b) +sum(pc for pc in c)
+        return (d)   
 
 class PersonCourseAdmin(admin.ModelAdmin):
 
@@ -123,19 +144,28 @@ class PersonCourseAdmin(admin.ModelAdmin):
 
 
 
-# class Position_ActivityAdmin(admin.ModelAdmin):
+class Position_ActivityAdmin(admin.ModelAdmin):
 
-#     list_display = [field.name for field in PersonPosition_Activity._meta.get_fields() if (field.name != 'id')]
-#     print('position',list_display)
-#     form = CourseAdminForm
+    list_display = [field.name for field in Position_Activity._meta.get_fields() if ((field.name != 'personactivity') and (field.name != 'activities') and (field.name != 'id'))]
+    list_filter_links = ('type') 
 
+    print('activityactivity',list_display)
+    form = CourseAdminForm
 
-    
+class PersonActivityAdmin(admin.ModelAdmin):
+
+    list_display = [field.name for field in PersonActivity._meta.get_fields() if (field.name != 'id')]
+
+    # print('activity',list_display)
+    form = CourseAdminForm
+
 
 admin.site.register(Course, CourseAdmin)
 admin.site.register(Person,PersonAdmin)
 admin.site.register(PersonCourse,PersonCourseAdmin)
-#admin.site.register(Position_Activity)
+admin.site.register(Position_Activity,Position_ActivityAdmin)
+admin.site.register(PersonActivity,PersonActivityAdmin)
+
 #admin.site.register(Position_Activity,Position_ActivityAdmin)
 
 # admin.site.register(Ressource)

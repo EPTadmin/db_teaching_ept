@@ -133,6 +133,20 @@ class Course(models.Model):
     def __str__(self):
         return self.course_id + ' ' + self.name
     
+class Position_Activity(models.Model):
+    type = models.CharField(choices = roletype_choices,
+                            max_length=40,
+                            default='-')
+    emne = models.CharField(choices = emne_choices,
+                            max_length=2,
+                            default='-')
+    antall_time = models.CharField(choices = antall_time_choices,blank=True,null=True,max_length=3
+                            )
+    arsverk = models.CharField(choices = arsverk_choices,blank=True,null=True,max_length=3
+                            )
+    
+    def __str__(self):
+        return self.type
 
 class Person(models.Model):
 
@@ -160,12 +174,18 @@ class Person(models.Model):
     position = models.CharField (null = False,blank=False,choices = role_choices,
                             max_length=3,default='-')
     groupe = models.CharField (null = False,blank=False,choices = groupe_choices,
-                            max_length=3,default='-')   
+                            max_length=3,default='-')  
+     
     courses = models.ManyToManyField(
         Course,
+        null = True,
         related_name='courses'
     )
 
+    activities = models.ManyToManyField(
+        Position_Activity,
+        related_name='activities'
+    )
 
     def __str__(self):
         return self.first_name + ' ' + self.last_name
@@ -182,26 +202,13 @@ class PersonCourse(models.Model):
         return self.amount
     
 
-# class Position_Activity(models.Model):
-#     type = models.CharField(choices = roletype_choices,
-#                             max_length=40,
-#                             default='-')
-#     emne = models.CharField(choices = emne_choices,
-#                             max_length=2,
-#                             default='-')
-#     antall_time = models.CharField(choices = antall_time_choices,blank=True,null=True,max_length=3
-#                             )
-#     arsverk = models.CharField(choices = arsverk_choices,blank=True,null=True,max_length=3
-#                             )
-    
-#     def __str__(self):
-#         return self.type
 
-# class PersonPosition_Activity(models.Model):
-#     person = models.ForeignKey(Person,on_delete=models.CASCADE) 
-#     activity = models.ForeignKey(Position_Activity,on_delete=models.CASCADE) 
-#     amount = models.IntegerField()
 
-#     def __int__(self):
-#         return self.amount
+class PersonActivity(models.Model):
+    person = models.ForeignKey(Person,on_delete=models.CASCADE) 
+    activity = models.ForeignKey(Position_Activity,on_delete=models.CASCADE) 
+    amount = models.FloatField()
+
+    def __int__(self):
+        return self.amount
     
