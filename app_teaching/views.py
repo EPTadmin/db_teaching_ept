@@ -2,7 +2,7 @@ from django.shortcuts import render
 from . import models
 from django.views import generic
 from django.db.models import Q
-from .models import Course,Person,PersonCourse
+from .models import Course,Person,PersonCourse,PersonActivity
 from . import forms
 from django.db.models import Value
 from django.db.models.functions import Concat
@@ -21,13 +21,7 @@ def index(request):
     return render(request,'index.html')
 
 
-# def plot(request):
-#     courses = Course.objects.all()
-#     personcourses = PersonCourse.objects.all()
-#     context ={
-#         "courses": courses,
-#         "personcourses":personcourses
-#     }
+
 def plot(request):
     courses = [{'course_id':obj.course_id, 'name':obj.name,'type':obj.type,'group':obj.group,'nb_student':obj.nb_student }for obj in Course.objects.all()]
     personcourses = [{'person_group':obj.person.groupe,'person':obj.person.first_name+ ' ' +obj.person.last_name, 'course_type':obj.course.type, 'course_group':obj.course.group,'course':obj.course.course_id+ ' ' +obj.course.name,'amount':obj.amount}for obj in PersonCourse.objects.all()]
@@ -49,11 +43,19 @@ def load(request):
     courses = [{'course_id':obj.course_id, 'name':obj.name,'type':obj.type,'group':obj.group,'nb_student':obj.nb_student }for obj in Course.objects.all()]
     persons = [{'name':obj.first_name+ ' ' +obj.last_name,'group':obj.groupe}for obj in Person.objects.all()]
     personcourses = [{'person_group':obj.person.groupe,'person':obj.person.first_name+ ' ' +obj.person.last_name, 'course_type':obj.course.type, 'course_sp':obj.course.studiepoeng,'course_group':obj.course.group,'course':obj.course.course_id+ ' ' +obj.course.name,'amount':obj.amount}for obj in PersonCourse.objects.all()]
-    print(personcourses)
+
+    personactivities = [{'person_group':obj.person.groupe,'person':obj.person.first_name+ ' ' +obj.person.last_name, 'activity_type':obj.activity.type,'arsverk':obj.activity.arsverk,'activity_antall_time':obj.activity.antall_time,'activity_emne':obj.activity.emne,'amount':obj.amount}for obj in PersonActivity.objects.all()]
+    personactivities_position = [{'person_group':obj.person.groupe,'person':obj.person.first_name+ ' ' +obj.person.last_name, 'activity_type':obj.activity.type,'arsverk':obj.activity.arsverk,'activity_emne':obj.activity.emne,'amount':obj.amount}for obj in PersonActivity.objects.all() if obj.activity.emne == 'L']
+    personactivities_project = [{'person_group':obj.person.groupe,'person':obj.person.first_name+ ' ' +obj.person.last_name, 'activity_type':obj.activity.type,  'activity_antall_time':obj.activity.antall_time,'activity_emne':obj.activity.emne,'amount':obj.amount}for obj in PersonActivity.objects.all()if obj.activity.emne == 'P']
     context ={
         "persons":persons,
         "courses": courses,
-        "personcourses":personcourses
+        "personcourses":personcourses,
+        "personactivities_position":personactivities_position,
+        "personactivities_project":personactivities_project,
+        "personactivities":personactivities
+
+
     }
     return render(request,'app_teaching/index_load.html',context)
 
@@ -81,7 +83,7 @@ def persons(request):
     all_persons= models.Person.objects.all()
     return render(request,'persons.html',{'persons': all_persons})
 
-def position_activity(request):
+def position_activitys(request):
     all_position_activitys= models.Position_Activity.objects.all()
     return render(request,{'position_activitys': all_position_activitys})
 

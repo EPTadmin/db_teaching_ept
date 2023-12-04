@@ -13,6 +13,8 @@ urlpatterns = [
     path('about', views.about, name = 'about'),
     path('admin/', views.admin, name = 'admin'),
     path('courses/', views.courses, name = 'courses'),
+    # path('position_activitys/', views.position_activitys, name = 'position_activitys'),
+
     path('courseperson', views.courseperson, name = 'courseperson'),
     path('courseperson_s/', views.courseperson_s, name = 'courseperson_s'),
     path('courseperson_i/', views.courseperson_i, name = 'courseperson_i'),
