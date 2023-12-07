@@ -7,7 +7,7 @@
 <div>
   <div class="selectBox"><a >Choose a group</a>
     <select id="groupselect">
-      <option value = "{%for course in courses%} {{course.nb_student}},{%endfor%} ">All</option>
+      <option value = "{%for course in courses%} {{course.nb_student}} {{course.nb_student}},{%endfor%} ">All</option>
       <option value = "{%for course in courses%}{%if course.group == 's'%} {{course.nb_student}},{%endif%}{%endfor%} ">Sustainable Energy Systems</option>
       <option value = "{%for course in courses%}{%if course.group == 'i'%} {{course.nb_student}},{%endif%}{%endfor%} ">IndEcol</option>
       <option value = "{%for course in courses%}{%if course.group == 'p'%} {{course.nb_student}},{%endif%}{%endfor%} ">Process and Power</option>
@@ -59,18 +59,27 @@
         //backgroundColor: [getRandomColor()], 
 
         borderWidth: 1
-      }]
+      },
+      //{
+      //   label: 'Number of Vit. Assistant per course type and per group',
+        // data: [{%for course in courses%}  {{course.nb_vit}},{%endfor%}],
+        //backgroundColor: [getRandomColor()], 
+
+       //  borderWidth: 1
+       //},
+       //{
+         //label: 'Number of Student Assistant per course type and per group',
+         //data: [{%for course in courses%}  {{course.nb_stud_ass}},{%endfor%}],
+        //backgroundColor: [getRandomColor()], 
+
+         //borderWidth: 1
+       //}
+       ]
     },
     options: {
       indexAxis: 'y',
       scales: {
-        x:{
-          stacked: true,
-        },
-          y: {
-            stacked: true,
-              
-          }
+
       }
     }
   });
