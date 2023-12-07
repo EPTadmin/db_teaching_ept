@@ -12,6 +12,8 @@ from django.template import loader
 
 
 
+
+
 # Create your views here.
 
 def is_valid_queryparam(param):
@@ -32,8 +34,49 @@ def plot(request):
     }
     return render(request,'app_teaching/index.html',context)
 
-def nb_student(request):
+def indecol(request):
     courses = [{'course_id':obj.course_id, 'name':obj.name,'type':obj.type,'group':obj.group,'nb_student':obj.nb_student }for obj in Course.objects.all()]
+    personcourses = [{'person_group':obj.person.groupe,'person':obj.person.first_name+ ' ' +obj.person.last_name, 'course_type':obj.course.type, 'course_group':obj.course.group,'course':obj.course.course_id+ ' ' +obj.course.name,'amount':obj.amount}for obj in PersonCourse.objects.all()]
+    print(personcourses)
+    context ={
+        "courses": courses,
+        "personcourses":personcourses
+    }
+    return render(request,'app_teaching/teaching_indecol.html',context)
+
+def ses(request):
+    courses = [{'course_id':obj.course_id, 'name':obj.name,'type':obj.type,'group':obj.group,'nb_student':obj.nb_student }for obj in Course.objects.all()]
+    personcourses = [{'person_group':obj.person.groupe,'person':obj.person.first_name+ ' ' +obj.person.last_name, 'course_type':obj.course.type, 'course_group':obj.course.group,'course':obj.course.course_id+ ' ' +obj.course.name,'amount':obj.amount}for obj in PersonCourse.objects.all()]
+    print(personcourses)
+    context ={
+        "courses": courses,
+        "personcourses":personcourses
+    }
+    return render(request,'app_teaching/teaching_ses.html',context)
+
+def thermo(request):
+    courses = [{'course_id':obj.course_id, 'name':obj.name,'type':obj.type,'group':obj.group,'nb_student':obj.nb_student }for obj in Course.objects.all()]
+    personcourses = [{'person_group':obj.person.groupe,'person':obj.person.first_name+ ' ' +obj.person.last_name, 'course_type':obj.course.type, 'course_group':obj.course.group,'course':obj.course.course_id+ ' ' +obj.course.name,'amount':obj.amount}for obj in PersonCourse.objects.all()]
+    print(personcourses)
+    context ={
+        "courses": courses,
+        "personcourses":personcourses
+    }
+    return render(request,'app_teaching/teaching_thermo.html',context)
+
+
+def power(request):
+    courses = [{'course_id':obj.course_id, 'name':obj.name,'type':obj.type,'group':obj.group,'nb_student':obj.nb_student }for obj in Course.objects.all()]
+    personcourses = [{'person_group':obj.person.groupe,'person':obj.person.first_name+ ' ' +obj.person.last_name, 'course_type':obj.course.type, 'course_group':obj.course.group,'course':obj.course.course_id+ ' ' +obj.course.name,'amount':obj.amount}for obj in PersonCourse.objects.all()]
+    print(personcourses)
+    context ={
+        "courses": courses,
+        "personcourses":personcourses
+    }
+    return render(request,'app_teaching/teaching_power.html',context)
+
+def nb_student(request):
+    courses = [{'course_id':obj.course_id, 'name':obj.name,'type':obj.type,'group':obj.group,'nb_student':obj.nb_student,'nb_vit':obj.nb_vit,'nb_stud_ass':obj.nb_stud_ass }for obj in Course.objects.all()]
     context ={
         "courses": courses
     }

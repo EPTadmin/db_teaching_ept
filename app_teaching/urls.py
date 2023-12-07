@@ -5,10 +5,47 @@ from app_teaching.views import BootstrapFilterView
 urlpatterns = [
     path('', views.index, name = 'index'),
     path('plot/',views.plot,name ='plot'),
-    path('plot/index_nb_stud_type/index_load', views.load,name ='index_load'),
-    path('plot/index_nb_stud_type/', views.nb_student,name ='index_nb_stud_type'),
-    path('plot/index_load/', views.load,name ='index_load'),
-    path('plot/index_load/index_nb_stud_type', views.nb_student,name ='nb_student'),
+    path('index_load/', views.load,name ='index_load'),
+    
+    # path('plot/index_load/index_nb_stud_type', views.nb_student,name ='nb_student'),
+    # path('plot/index_load/teaching_indecol',views.indecol,name ='teaching_indecol'),
+    # path('plot/index_load/teaching_thermo',views.thermo,name ='teaching_thermo'),
+    # path('plot/index_load/teaching_power',views.power,name ='teaching_power'),
+    # path('plot/index_load/teaching_ses',views.ses,name ='teaching_ses'),
+    
+    path('index_nb_stud_type/', views.nb_student,name ='index_nb_stud_type'),
+    # path('plot/index_nb_stud_type/index_load', views.load,name ='index_load'),
+    # path('plot/index_nb_stud_type/teaching_indecol', views.indecol,name ='teaching_indecol'),
+    # path('plot/index_nb_stud_type/teaching_thermo',views.thermo,name ='teaching_thermo'),
+    # path('plot/index_nb_stud_type/teaching_power',views.power,name ='teaching_power'),
+    # path('plot/index_nb_stud_type/teaching_ses',views.ses,name ='teaching_ses'),
+
+    path('teaching_indecol/',views.indecol,name ='teaching_indecol'),
+    path('teaching_ses/',views.ses,name ='teaching_ses'),
+    path('teaching_power/',views.power,name ='teaching_power'),
+    path('teaching_thermo/',views.thermo,name ='teaching_thermo'),
+
+
+    # path('plot/teaching_indecol/index_load', views.load,name ='index_load'),
+    # path('plot/teaching_indecol/teaching_thermo',views.thermo,name ='teaching_thermo'),
+    # path('plot/teaching_indecol/teaching_power',views.power,name ='teaching_power'),
+    # path('plot/teaching_indecol/teaching_ses',views.ses,name ='teaching_ses'),
+
+    # path('plot/teaching_thermo/index_load', views.load,name ='index_load'),
+    # path('plot/teaching_thermo/teaching_indecol', views.indecol,name ='teaching_indecol'),
+    # path('plot/teaching_thermo/teaching_power',views.power,name ='teaching_power'),
+    # path('plot/teaching_thermo/teaching_ses',views.ses,name ='teaching_ses'),
+
+    # path('plot/teaching_ses/index_load', views.load,name ='index_load'),
+    # path('plot/teaching_ses/teaching_indecol', views.indecol,name ='teaching_indecol'),
+    # path('plot/teaching_ses/teaching_thermo',views.power,name ='teaching_power'),
+    # path('plot/teaching_ses/teaching_power',views.ses,name ='teaching_ses'),
+    
+    # path('plot/teaching_power/index_load', views.load,name ='index_load'),
+    # path('plot/teaching_power/teaching_indecol', views.indecol,name ='teaching_indecol'),
+    # path('plot/teaching_power/teaching_thermo',views.power,name ='teaching_power'),
+    # path('plot/teaching_power/teaching_ses',views.ses,name ='teaching_ses'),
+
 
     path('about', views.about, name = 'about'),
     path('admin/', views.admin, name = 'admin'),
